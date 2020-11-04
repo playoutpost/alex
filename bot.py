@@ -23,7 +23,7 @@ client.remove_command("help")
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(" Mining...", "playoutpost.com"))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(" Mining..."))
     print('Logged in as: {0.user}'.format(client))
 
 #General Error Handling----------------------------------
@@ -65,49 +65,6 @@ async def clear(ctx, amount=None):
     else:
         nonnumeric_card = discord.Embed(title="Error!", description="The value after !clear must be a number.\neg. !clear 50\nPlease refer to ?help for more info.", colour=discord.Colour.green())
         await ctx.send(embed=nonnumeric_card)
-
-@client.command() #Coinflip Command
-async def flip(ctx):
-    choices = ["Heads", "Tails"]
-    rancoin = random.choice(choices)
-    coinflip_card = discord.Embed(colour = discord.Colour.green(), description=f"The result was **{rancoin}**!")
-    await ctx.send(embed=coinflip_card)
-
-@client.command(aliases=['8ball']) #8ball Command
-async def _8ball(ctx, *, question):
-    responses = ["It is certain.", "It is decidedly so.", "Without a doubt.", "Yes - definitely.", "You may rely on it.",
-                "As I see it, yes.", "Most likely.", "Outlook good.", "Yes.", "Signs point to yes.", "Reply hazy, try again.",
-                "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
-                "Don't count on it.", "My reply is no.", "My sources say no.", "Outlook not so good.", "Very doubtful."]
-    _8ball_card = discord.Embed(colour = discord.Colour.green(), description = f"**Question:** {question}\n**Answer:** {random.choice(responses)}")
-    await ctx.send(embed=_8ball_card)
-    
-@client.command()
-async def pog(ctx):
-    pog_card = discord.Embed(colour = discord.Colour.green())
-    pog_card.set_image(url="https://i.ibb.co/YjDt67q/Screen-Shot-2020-07-23-at-2-41-30-PM.png")
-    await ctx.send(embed=pog_card)
-
-@client.command()
-async def f(ctx):
-    f_card = discord.Embed(colour = discord.Colour.green())
-    f_card.set_image(url="https://i.ibb.co/ZxTTJHb/f.jpg")
-    await ctx.send(embed=f_card)
-
-@client.command()
-async def meme(ctx):
-    memes=["https://bit.ly/3cSmj3Y", "https://bit.ly/3fcPaSs", "https://bit.ly/3cStvNy", "https://bit.ly/3ffmWXd", "https://bit.ly/2YkpGM5",
-     "https://bit.ly/2YnYn3f", "https://bit.ly/2zpc8q8", "https://bit.ly/3fcwPVv", "https://bit.ly/3hbCOMd", "https://bit.ly/3f5FWam"]
-    meme_card = discord.Embed(colour = discord.Colour.green())
-    meme_card.set_image(url=random.choice(memes))
-    await ctx.send(embed=meme_card)
-
-@client.command()
-async def vote(ctx):
-    vote_card = discord.Embed(title="\U0001F3C6 Vote for Synergyy on Top.gg", description="Thanks for helping us grow!", colour = discord.Colour.green())
-    vote_card.add_field(name="Vote", value="[Click here to vote for free!](https://top.gg/bot/719271108037312595)")
-    vote_card.set_footer(text="Tip: You can vote once every 12 hours.\nTip: Votes are worth double on weekends.")
-    await ctx.send(embed=vote_card)
 
 @client.command()
 async def addtodo(ctx, *, todo_item):
