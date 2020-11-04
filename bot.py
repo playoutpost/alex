@@ -43,7 +43,7 @@ async def help(ctx):
     embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`', inline=False)
     embed.add_field(name='?list', value = 'Lists all upcoming meetings.', inline=False)
     embed.add_field(name='?delete', value = 'Delete upcoming meetings.', inline=False)
-    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`!addtodo Finish Powerpoint`', inline=False)
+    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`addtodo Finish Powerpoint`', inline=False)
     embed.add_field(name='?todo', value = 'View and complete items in the todo list.', inline=False)
     embed.add_field(name='?poll option 1, option 2', value = 'Creates a new poll.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos`', inline=False)
     embed.set_footer(text="Powered by synergyy.ml")
@@ -157,7 +157,7 @@ async def meeting(ctx, *, information):
     info = information.strip().split()
     name = time = date = ''
     time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more info, please refer to ?help', colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. ?meeting "Physics Project" in 2 hours\nFor more info, please refer to ?help', colour=discord.Color.green())
     on_condition = True
 
     for i in range(len(info)):
@@ -253,7 +253,7 @@ async def meeting(ctx, *, information):
     #Meeting Confirmation
     meeting_card = discord.Embed(title=f"\U0001F5D3 Meeting Created: {name}", url=google_link, colour=discord.Colour.green())
     meeting_card.add_field(name="Meeting Time", value=f"{time} on {date}")
-    meeting_card.set_footer(text="Tip: Click the check mark below to opt-in to DM reminders for this meeting!\nTip: Click the title to add this event to Google Calendar!")
+    meeting_card.set_footer(text="Tip: Click the check mark below to opt-in to DM reminders")
     confirmation = await ctx.send(content=None, embed=meeting_card)
     await confirmation.add_reaction(emoji='✅')
     await asyncio.sleep(m_time-now)
@@ -281,7 +281,7 @@ async def meeting(ctx, *, information):
             rvsp = rvsp[1:]
 
         url = "http://discordapp.com/channels/" + str(confirmation.guild.id) + '/' + str(confirmation.channel.id) + '/' + str(confirmation.id)
-        reminder_card = discord.Embed(description=f"Hey! This is a reminder about your meeting, [{name}]({url}).\nHead over to your team's discord server to participate!", colour = discord.Colour.green())
+        reminder_card = discord.Embed(description=f"Hey! This is a reminder about your meeting, [{name}]({url}).\nHead over to discord to participate!", colour = discord.Colour.green())
         for member in rvsp:
             dm = await member.create_dm()
             await dm.send(embed=reminder_card)
@@ -363,7 +363,7 @@ async def list(ctx): #List command that lists all upcoming meetings
         if future:
             meetings_embed.add_field(name="Later", value='>>> ' + '\n'.join(future), inline=False)
     else:
-        meetings_embed.add_field(name="No upcoming meetings.", value=">>> Use !meeting to create one!\nRefer to ?help for more info.")
+        meetings_embed.add_field(name="No upcoming meetings.", value=">>> Use ?meeting to create one!\nRefer to ?help for more info.")
 
     await ctx.send(embed=meetings_embed)
 
@@ -405,7 +405,7 @@ async def delete(ctx, *, name=None):
             gt_10 = True
 
         elif len(meetings) == 0:
-            no_option = discord.Embed(title='Meeting Not Found', description='>>> No meetings found with that name.\nTry using !meeting to create a new meeting.', colour=discord.Colour.green())
+            no_option = discord.Embed(title='Meeting Not Found', description='>>> No meetings found with that name.\nTry using ?meeting to create a new meeting.', colour=discord.Colour.green())
             await ctx.send(embed=no_option)
             return
 
@@ -434,7 +434,7 @@ async def delete(ctx, *, name=None):
 
         #If original meetings list was greater than 10
         if gt_10:
-            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using !delete *meeting name* to narrow your search', inline=False)
+            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using ?delete *meeting name* to narrow your search', inline=False)
 
         #Adding reactions to get choices
         message_1 = await ctx.send(embed=delete_options)
@@ -501,7 +501,7 @@ async def delete(ctx, *, name=None):
             meetings = meetings[:10]
             gt_10 = True
         elif len(meetings) == 0:
-            no_option = discord.Embed(title='No Meetings', description='>>> No meetings found.\nTry using !meeting to create a new meeting.', colour=discord.Colour.green())
+            no_option = discord.Embed(title='No Meetings', description='>>> No meetings found.\nTry using ?meeting to create a new meeting.', colour=discord.Colour.green())
             await ctx.send(embed=no_option)
             return
 
@@ -527,7 +527,7 @@ async def delete(ctx, *, name=None):
         
         #If original meetings list was greater than 10
         if gt_10:
-            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using !delete *meeting name* to narrow your search', inline=False)
+            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using ?delete *meeting name* to narrow your search', inline=False)
 
         #Adding reactions to get choices
         message_1 = await ctx.send(embed=delete_options)
@@ -565,7 +565,7 @@ async def delete(ctx, *, name=None):
 
 @client.command()
 async def poll(ctx, *, information): #Poll command
-    if '\"' in information and ',' in information and information[len(information)-1].isnumeric():
+    if '\"' in information and ',' in information:
         op = []
         polltimeinminutes = 0
         title = information[information.index('\"')+1 : information.rindex('\"')]
@@ -603,7 +603,7 @@ async def poll(ctx, *, information): #Poll command
             await ctx.send(embed=winner_card)
         
         else:
-            too_many_options = discord.Embed(title="Too many options!", description="The limit for !poll is 20 options.", color=discord.Colour.green())
+            too_many_options = discord.Embed(title="Too many options!", description="The limit for ?poll is 20 options.", color=discord.Colour.green())
             await ctx.send(embed=too_many_options)
 
 @client.command()
@@ -663,7 +663,7 @@ async def timenow(ctx):
 @meeting.error
 async def meeting_error(ctx, error):
     time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more help, refer to ?help', colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. ?meeting "Physics Project" in 2 hours\nFor more help, refer to ?help', colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=time_missing)
     else:
@@ -672,8 +672,8 @@ async def meeting_error(ctx, error):
 
 @poll.error
 async def poll_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing Required Argument!', description="Please follow this format: ?poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description="Please follow this format: ?poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
     else:
