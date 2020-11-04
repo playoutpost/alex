@@ -30,9 +30,9 @@ async def on_ready():
 
 @client.event
 async def on_command_error(ctx, error):
-    #if isinstance(error, commands.CommandNotFound):
-    #    command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
-    #    await ctx.send(content=None, embed=command_not_found)
+    if isinstance(error, commands.CommandNotFound):
+        command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
+        await ctx.send(content=None, embed=command_not_found)
 
 #Commands-------------------------------------------------
 
