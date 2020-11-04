@@ -39,14 +39,14 @@ async def on_command_error(ctx, error):
 @client.command(pass_context=True) #Custom Help Command
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
-    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717853456244670509/718950987762761758/SynergyyNoBg.png")
+    embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
     embed.add_field(name='!meeting', value = 'Creates a new meeting.\nOnce the meeting is created, you can easily add it to your google calendar.\n>>> eg. !meeting "Physics Project" in 2 hours\neg. !meeting "Math Meeting!" on 8/21 at 9:30 PM\neg. !meeting "Team Discussion" on June 19 at 3pm', inline=False)
     embed.add_field(name='!list', value = 'Lists all upcoming meetings.', inline=False)
     embed.add_field(name='!delete', value = 'Delete upcoming meetings.', inline=False)
     embed.add_field(name='!addtodo', value = 'Creates a new task.\n>>> eg. !addtodo Finish Powerpoint', inline=False)
     embed.add_field(name='!todo', value = 'Allows you to view and complete items in your todo list.', inline=False)
     embed.add_field(name='!poll', value = 'Creates a new poll.\n>>> Format: !poll "Title" options (poll time limit in minutes)\neg. !poll "Favourite Food?" Pizza, Sushi, Tacos 2\nNote: The poll must have atleast 2 options.', inline=False)
-    embed.add_field(name='-------------------------------------', value = "Visit our [website](https://www.synergyy.ml/) for the full list of commands!\nVote for us on [top.gg](https://top.gg/bot/719271108037312595) to help us grow!", inline=False)
+    embed.add_field(name='-------------------------------------', value = "Powered by synergyy.ml", inline=False)
     embed.set_footer(text="Tip: All commands can be invoked using !")
     await ctx.send(embed=embed)
 
@@ -260,7 +260,7 @@ async def meeting(ctx, *, information):
     google_end_date = datetime.datetime.fromtimestamp(m_time + 3600).strftime('%Y%m%d')
     google_end_time = datetime.datetime.fromtimestamp(m_time + 3600).strftime('%H%M%S')
     google_name = '+'.join(name.split())
-    google_link = 'https://www.google.com/calendar/render?action=TEMPLATE&text='+google_name+'&details=Event+created+by+Synergyy&dates='+google_date+'T'+google_time+'/'+google_end_date+'T'+google_end_time
+    google_link = 'https://www.google.com/calendar/render?action=TEMPLATE&text='+google_name+'&details=Playoutpost.com+Event&dates='+google_date+'T'+google_time+'/'+google_end_date+'T'+google_end_time
     print(google_link)
 
     #Meeting Confirmation
@@ -690,15 +690,6 @@ async def clear_error(ctx, error):
         await ctx.send(content=None, embed=perms_missing)
     else:
         print(error)
-
-@_8ball.error
-async def _8ball_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="You need to ask the 8ball a question!\neg. !8ball Am I cool?\n Please refer to ?help for more info.", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !8ball Am I cool?\n Please refer to ?help for more info.", colour=discord.Color.green())
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(content=None, embed=arg_missing)
-    else:
-        await ctx.send(content=None, embed=format_error)
 
 @meeting.error
 async def meeting_error(ctx, error):
