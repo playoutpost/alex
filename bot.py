@@ -30,9 +30,9 @@ async def on_ready():
 
 @client.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
-        await ctx.send(content=None, embed=command_not_found)
+    #if isinstance(error, commands.CommandNotFound):
+    #    command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
+    #    await ctx.send(content=None, embed=command_not_found)
 
 #Commands-------------------------------------------------
 
@@ -40,14 +40,13 @@ async def on_command_error(ctx, error):
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
-    embed.add_field(name='!meeting', value = 'Creates a new meeting.\nOnce the meeting is created, you can easily add it to your google calendar.\n>>> eg. !meeting "Physics Project" in 2 hours\neg. !meeting "Math Meeting!" on 8/21 at 9:30 PM\neg. !meeting "Team Discussion" on June 19 at 3pm', inline=False)
-    embed.add_field(name='!list', value = 'Lists all upcoming meetings.', inline=False)
-    embed.add_field(name='!delete', value = 'Delete upcoming meetings.', inline=False)
-    embed.add_field(name='!addtodo', value = 'Creates a new task.\n>>> eg. !addtodo Finish Powerpoint', inline=False)
-    embed.add_field(name='!todo', value = 'Allows you to view and complete items in your todo list.', inline=False)
-    embed.add_field(name='!poll', value = 'Creates a new poll.\n>>> Format: !poll "Title" options (poll time limit in minutes)\neg. !poll "Favourite Food?" Pizza, Sushi, Tacos 2\nNote: The poll must have atleast 2 options.', inline=False)
-    embed.add_field(name='-------------------------------------', value = "Powered by synergyy.ml", inline=False)
-    embed.set_footer(text="Tip: All commands can be invoked using !")
+    embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`!meeting "Physics Project" in 2 hours`\n`!meeting "Math Meeting!" on 8/21 at 9:30 PM`', inline=False)
+    embed.add_field(name='?list', value = 'Lists all upcoming meetings.', inline=False)
+    embed.add_field(name='?delete', value = 'Delete upcoming meetings.', inline=False)
+    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`!addtodo Finish Powerpoint`', inline=False)
+    embed.add_field(name='?todo', value = 'Allows you to view and complete items in your todo list.', inline=False)
+    embed.add_field(name='?poll option 1, option 2', value = 'Creates a new poll.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos`', inline=False)
+    embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
 
 @client.command() #Ping Command
@@ -70,20 +69,20 @@ async def clear(ctx, amount=None):
 async def addtodo(ctx, *, todo_item):
     todo_add_card = discord.Embed(title="\U0001F4CB To-Do Item Added!", colour=discord.Color.green())
     todo_add_card.add_field(name="Item Added:", value=f">>> **{todo_item}** was added to your todo list.")
-    todo_add_card.set_footer(text="Use !todo to see your list and to check off items when you complete them.")
+    todo_add_card.set_footer(text="Use ?todo to see your list and to check off items when you complete them.")
     await ctx.send(embed=todo_add_card)
 
     #Storing Todo Data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "3306",
+                            database = os.environ['DB'])
     cursor = db.cursor()
     create_table_query = '''CREATE TABLE IF NOT EXISTS todo
-          (GUILD bigint      NOT NULL,
-          CHANNEL           bigint    NOT NULL,
-          TODO_ITEM         TEXT); '''
+            (GUILD bigint      NOT NULL,
+            CHANNEL           bigint    NOT NULL,
+            TODO_ITEM         TEXT); '''
     
     cursor.execute(create_table_query)
     db.commit()
@@ -103,10 +102,10 @@ async def todo(ctx):
 
     #Accessing data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "3306",
+                            database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT TODO_ITEM FROM todo WHERE GUILD = {ctx.guild.id}")
@@ -224,10 +223,10 @@ async def meeting(ctx, *, information):
 
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "3306",
+                                database = os.environ['DB'])
         cursor = db.cursor()
         create_table_query = '''CREATE TABLE IF NOT EXISTS meetings
             (GUILD bigint      NOT NULL,
@@ -274,10 +273,10 @@ async def meeting(ctx, *, information):
     #Check if event still exists
 
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "3306",
+                            database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id} AND TIME = {m_time}")
@@ -306,10 +305,10 @@ async def meeting(ctx, *, information):
 
         #Delete meeting for database
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "3306",
+                                database = os.environ['DB'])
         cursor = db.cursor()
         val = str(name)
         sql_delete_query = 'Delete from meetings where name= %s AND guild=%s'
@@ -325,10 +324,10 @@ async def list(ctx): #List command that lists all upcoming meetings
     #Accessing data
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "3306",
+                                database = os.environ['DB'])
 
         cursor = db.cursor()
         cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
@@ -388,10 +387,10 @@ async def delete(ctx, *, name=None):
 
         #Accessing data
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "3306",
+                                database = os.environ['DB'])
 
         cursor = db.cursor()
         sql = ("SELECT NAME FROM meetings WHERE GUILD=%s and NAME=%s")
@@ -493,10 +492,10 @@ async def delete(ctx, *, name=None):
 
         try:
             db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                    password = os.environ['DB_PASS'],
+                                    host = os.environ['DB_HOST'],
+                                    port = "3306",
+                                    database = os.environ['DB'])
 
             cursor = db.cursor()
             cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
