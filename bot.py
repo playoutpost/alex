@@ -76,7 +76,7 @@ async def addtodo(ctx, *, todo_item):
     db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
     cursor = db.cursor()
     create_table_query = '''CREATE TABLE IF NOT EXISTS todo
@@ -104,7 +104,7 @@ async def todo(ctx):
     db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
 
     cursor = db.cursor()
@@ -225,7 +225,7 @@ async def meeting(ctx, *, information):
         db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
         cursor = db.cursor()
         create_table_query = '''CREATE TABLE IF NOT EXISTS meetings
@@ -275,7 +275,7 @@ async def meeting(ctx, *, information):
     db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
 
     cursor = db.cursor()
@@ -307,7 +307,7 @@ async def meeting(ctx, *, information):
         db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
         cursor = db.cursor()
         val = str(name)
@@ -326,7 +326,7 @@ async def list(ctx): #List command that lists all upcoming meetings
         db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
 
         cursor = db.cursor()
@@ -389,7 +389,7 @@ async def delete(ctx, *, name=None):
         db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
 
         cursor = db.cursor()
@@ -494,7 +494,7 @@ async def delete(ctx, *, name=None):
             db = psycopg2.connect(user = os.environ['DB_USER'],
                                   password = os.environ['DB_PASS'],
                                   host = os.environ['DB_HOST'],
-                                  port = "3306",
+                                  port = "5432",
                                   database = os.environ['DB'])
 
             cursor = db.cursor()
