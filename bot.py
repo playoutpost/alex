@@ -607,6 +607,9 @@ async def poll(ctx, *, information): #Poll command
         else:
             too_many_options = discord.Embed(title="Too many options!", description="The limit for ?poll is 20 options.", color=discord.Colour.green())
             await ctx.send(embed=too_many_options)
+    else:
+        too_many_options = discord.Embed(title="Wrong input", description="You need to give the title of your poll, the options, and the time to run the poll for\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2` will run a poll for 2 minutes", color=discord.Colour.green())
+        await ctx.send(embed=too_many_options)
 
 @client.command()
 async def timenow(ctx):
