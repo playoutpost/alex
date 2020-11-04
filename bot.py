@@ -88,7 +88,7 @@ async def addtodo(ctx, *, todo_item):
 
 @client.command()
 async def todo(ctx):
-    todo_card = discord.Embed(title="\U0001F4CB Todo List", colour=discord.Colour.green())
+    todo_card = discord.Embed(title="\U0001F4CB Todo list", colour=discord.Colour.green())
     completed_embed = discord.Embed(title='\U0001F4CB Todo item completed', colour=discord.Colour.green())
 
     #Accessing data
@@ -366,7 +366,7 @@ async def list(ctx): #List command that lists all upcoming meetings
         if future:
             meetings_embed.add_field(name="Later", value='>>> ' + '\n'.join(future), inline=False)
     else:
-        meetings_embed.add_field(name="No upcoming meetings.")
+        meetings_embed.add_field(name="No upcoming meetings", value="Add meetings with `?meeting`")
 
     await ctx.send(embed=meetings_embed)
 
