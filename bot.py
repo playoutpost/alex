@@ -40,7 +40,7 @@ async def on_command_error(ctx, error):
 
 @client.command(pass_context=True) #Custom Help Command
 async def help(ctx):
-    embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
+    embed = discord.Embed(title="\U00002754	Alex the Helpful", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
     embed.add_field(name='Create meeting', value = '`?meeting`')
     embed.add_field(name='Lists meetings', value = '`?list`')
@@ -251,7 +251,6 @@ async def meeting(ctx, *, information):
     google_end_time = datetime.datetime.fromtimestamp(m_time + 3600).strftime('%H%M%S')
     google_name = '+'.join(name.split())
     google_link = 'https://www.google.com/calendar/render?action=TEMPLATE&text='+google_name+'&details=Playoutpost.com+Event&dates='+google_date+'T'+google_time+'/'+google_end_date+'T'+google_end_time
-    print(google_link)
 
     #Meeting Confirmation
     meeting_card = discord.Embed(title=f"\U0001F5D3 Meeting Created: {name}", url=google_link, colour=discord.Colour.green())
@@ -272,7 +271,6 @@ async def meeting(ctx, *, information):
     cursor = db.cursor()
     cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id} AND TIME = {m_time}")
     data = cursor.fetchone()
-    print(data)
     
     if data:
     #Meeting DM Reminder
@@ -614,7 +612,7 @@ async def poll(ctx, *, information): #Poll command
 
 @client.command()
 async def timenow(ctx):
-    fmt = "**%I:%M** %p on %m-%d-%Y"
+    fmt = "**%I:%M %p** on %m-%d-%Y"
     #Timezone Conversions
     now_utc = datetime.datetime.now(timezone('UTC'))
     now_london = now_utc.astimezone(timezone('Europe/London'))
