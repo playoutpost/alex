@@ -41,13 +41,13 @@ async def on_ready():
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
-    embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`', inline=False)
-    embed.add_field(name='?list', value = 'Lists all upcoming meetings', inline=False)
-    embed.add_field(name='?delete', value = 'Delete upcoming meetings', inline=False)
-    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`addtodo Finish Powerpoint`', inline=False)
-    embed.add_field(name='?todo', value = 'View and complete items in the todo list', inline=False)
-    embed.add_field(name='?timenow', value = 'Get the time from all over the world', inline=False)
-    embed.add_field(name='?poll option, option, time', value = 'Creates a new poll for 2 minutes.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2`', inline=False)
+    embed.add_field(name='?meeting', value = 'Creates meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`')
+    embed.add_field(name='?list', value = 'Lists meetings')
+    embed.add_field(name='?delete', value = 'Delete meetings')
+    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`addtodo Fix bugs`')
+    embed.add_field(name='?todo', value = 'View/complete todo items')
+    embed.add_field(name='?timenow', value = 'Time from all over the world')
+    embed.add_field(name='?poll option, option, time', value = 'Creates a new poll for 2 minutes.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2`')
     embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
 
@@ -608,7 +608,7 @@ async def poll(ctx, *, information): #Poll command
             too_many_options = discord.Embed(title="Too many options!", description="The limit for ?poll is 20 options.", color=discord.Colour.green())
             await ctx.send(embed=too_many_options)
     else:
-        too_many_options = discord.Embed(title="Wrong input", description="You need to give the title of your poll, the options, and the time to run the poll for\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2` will run a poll for 2 minutes", color=discord.Colour.green())
+        too_many_options = discord.Embed(title="Wrong input", description="You need to give the title of your poll, the options, and the time to run the poll for\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2` will run a poll for 2 minutes", color=discord.Colour.green())
         await ctx.send(embed=too_many_options)
 
 @client.command()
