@@ -584,6 +584,9 @@ async def poll(ctx, *, information): #Poll command
             options = {}
             for i in range(len(op)):
                 options[unicode_block[i]] = op[i]
+                print(i)
+                print(op[i])
+                print(op)
             
             vote = discord.Embed(title=f"\U0001F4F6 {title}", color=discord.Colour.green()) 
             value = "\n".join("{} - {}".format(*item) for item in options.items())
