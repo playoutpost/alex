@@ -42,13 +42,13 @@ async def on_command_error(ctx, error):
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
-    embed.add_field(name='?meeting', value = 'Creates meeting')
-    embed.add_field(name='?list', value = 'Lists meetings')
-    embed.add_field(name='?delete', value = 'Delete meetings')
-    embed.add_field(name='?addtodo <item>', value = 'Creates a new task')
-    embed.add_field(name='?todo', value = 'View/complete todo items')
-    embed.add_field(name='?poll <option>, <option>, <time>', value = 'Create a timed poll')
-    embed.add_field(name='?timenow', value = 'Time from all over the world')
+    embed.add_field(name='Create meeting', value = '`?meeting`')
+    embed.add_field(name='Lists meetings', value = '`?list`')
+    embed.add_field(name='Delete meeting', value = '`?delete`')
+    embed.add_field(name='Creates a new task', value = '`?addtodo <item>`')
+    embed.add_field(name='View todo list', value = '`?todo`')
+    embed.add_field(name='Create a timed poll', value = '`?poll <option>, <option>, <time>`')
+    embed.add_field(name='World time', value = '`?timenow`')
     embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
 
@@ -99,7 +99,7 @@ async def todo(ctx):
                             database = os.environ['DB'])
 
     cursor = db.cursor()
-    cursor.execute(f"SELECT TODO_ITEM FROM todo WHERE GUILD = {ctx.guild.id}")
+    cursor.execute(f"SELECT TODO_ITEM FROM todo WHERE GUILD = {ctx.guild.id} AND CHANNEL = {ctx.channel.id}")
     todos = [[todo[0]] for todo in cursor.fetchall()]
 
     for i in range(len(todos)):
