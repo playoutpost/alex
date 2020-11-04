@@ -565,7 +565,7 @@ async def delete(ctx, *, name=None):
 
 @client.command()
 async def poll(ctx, *, information): #Poll command
-    if '\"' in information and ',' in information:
+    if '\"' in information and ',' in information and information[len(information)-1].isnumeric():
         op = []
         polltimeinminutes = 0
         title = information[information.index('\"')+1 : information.rindex('\"')]
@@ -582,7 +582,6 @@ async def poll(ctx, *, information): #Poll command
         
         if len(op) <= 20:
             options = {}
-            print(op);
             for i in range(len(op)):
                 options[unicode_block[i]] = op[i]
             
