@@ -28,8 +28,9 @@ async def on_ready():
 
 #General Error Handling----------------------------------
 
-#@client.event
-#async def on_command_error(ctx, error):
+@client.event
+async def on_command_error(ctx, error):
+    break
     #if isinstance(error, commands.CommandNotFound):
         #command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
         #}
@@ -41,13 +42,13 @@ async def on_ready():
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
-    embed.add_field(name='?meeting', value = 'Creates meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`')
+    embed.add_field(name='?meeting', value = 'Creates meeting')
     embed.add_field(name='?list', value = 'Lists meetings')
     embed.add_field(name='?delete', value = 'Delete meetings')
-    embed.add_field(name='?addtodo', value = 'Creates a new task.\n`addtodo Fix bugs`')
+    embed.add_field(name='?addtodo <item>', value = 'Creates a new task')
     embed.add_field(name='?todo', value = 'View/complete todo items')
+    embed.add_field(name='?poll <option>, <option>, <time>', value = 'Create a timed poll')
     embed.add_field(name='?timenow', value = 'Time from all over the world')
-    embed.add_field(name='?poll option, option, time', value = 'Creates a new poll for 2 minutes.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2`')
     embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
 
@@ -158,8 +159,8 @@ async def todo(ctx):
 async def meeting(ctx, *, information):
     info = information.strip().split()
     name = time = date = ''
-    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. ?meeting "Physics Project" in 2 hours\nFor more info, please refer to ?help', colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing Time', description="Your command must look like this:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting Error', description="Your command must look like this:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
     on_condition = True
 
     for i in range(len(info)):
@@ -677,8 +678,8 @@ async def meeting_error(ctx, error):
 
 @poll.error
 async def poll_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="Please follow this format: ?poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Please follow this format: ?poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing Required Argument!', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
     else:
