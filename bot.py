@@ -28,8 +28,8 @@ async def on_ready():
 
 #General Error Handling----------------------------------
 
-#@client.event
-#async def on_command_error(ctx, error):
+@client.event
+async def on_command_error(ctx, error):
     #if isinstance(error, commands.CommandNotFound):
     #    command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
     #    await ctx.send(content=None, embed=command_not_found)
@@ -74,15 +74,15 @@ async def addtodo(ctx, *, todo_item):
 
     #Storing Todo Data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                            password = os.environ['DB_PASS'],
-                            host = os.environ['DB_HOST'],
-                            port = "3306",
-                            database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
     cursor = db.cursor()
     create_table_query = '''CREATE TABLE IF NOT EXISTS todo
-            (GUILD bigint      NOT NULL,
-            CHANNEL           bigint    NOT NULL,
-            TODO_ITEM         TEXT); '''
+          (GUILD bigint      NOT NULL,
+          CHANNEL           bigint    NOT NULL,
+          TODO_ITEM         TEXT); '''
     
     cursor.execute(create_table_query)
     db.commit()
@@ -102,10 +102,10 @@ async def todo(ctx):
 
     #Accessing data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                            password = os.environ['DB_PASS'],
-                            host = os.environ['DB_HOST'],
-                            port = "3306",
-                            database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT TODO_ITEM FROM todo WHERE GUILD = {ctx.guild.id}")
@@ -223,10 +223,10 @@ async def meeting(ctx, *, information):
 
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                password = os.environ['DB_PASS'],
-                                host = os.environ['DB_HOST'],
-                                port = "3306",
-                                database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
         cursor = db.cursor()
         create_table_query = '''CREATE TABLE IF NOT EXISTS meetings
             (GUILD bigint      NOT NULL,
@@ -273,10 +273,10 @@ async def meeting(ctx, *, information):
     #Check if event still exists
 
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                            password = os.environ['DB_PASS'],
-                            host = os.environ['DB_HOST'],
-                            port = "3306",
-                            database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id} AND TIME = {m_time}")
@@ -305,10 +305,10 @@ async def meeting(ctx, *, information):
 
         #Delete meeting for database
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                password = os.environ['DB_PASS'],
-                                host = os.environ['DB_HOST'],
-                                port = "3306",
-                                database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
         cursor = db.cursor()
         val = str(name)
         sql_delete_query = 'Delete from meetings where name= %s AND guild=%s'
@@ -324,10 +324,10 @@ async def list(ctx): #List command that lists all upcoming meetings
     #Accessing data
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                password = os.environ['DB_PASS'],
-                                host = os.environ['DB_HOST'],
-                                port = "3306",
-                                database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
 
         cursor = db.cursor()
         cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
@@ -387,10 +387,10 @@ async def delete(ctx, *, name=None):
 
         #Accessing data
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                password = os.environ['DB_PASS'],
-                                host = os.environ['DB_HOST'],
-                                port = "3306",
-                                database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
 
         cursor = db.cursor()
         sql = ("SELECT NAME FROM meetings WHERE GUILD=%s and NAME=%s")
@@ -492,10 +492,10 @@ async def delete(ctx, *, name=None):
 
         try:
             db = psycopg2.connect(user = os.environ['DB_USER'],
-                                    password = os.environ['DB_PASS'],
-                                    host = os.environ['DB_HOST'],
-                                    port = "3306",
-                                    database = os.environ['DB'])
+                                  password = os.environ['DB_PASS'],
+                                  host = os.environ['DB_HOST'],
+                                  port = "3306",
+                                  database = os.environ['DB'])
 
             cursor = db.cursor()
             cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
