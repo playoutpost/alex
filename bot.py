@@ -40,11 +40,11 @@ async def on_command_error(ctx, error):
 async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
-    embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`!meeting "Physics Project" in 2 hours`\n`!meeting "Math Meeting!" on 8/21 at 9:30 PM`', inline=False)
+    embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`', inline=False)
     embed.add_field(name='?list', value = 'Lists all upcoming meetings.', inline=False)
     embed.add_field(name='?delete', value = 'Delete upcoming meetings.', inline=False)
     embed.add_field(name='?addtodo', value = 'Creates a new task.\n`!addtodo Finish Powerpoint`', inline=False)
-    embed.add_field(name='?todo', value = 'Allows you to view and complete items in your todo list.', inline=False)
+    embed.add_field(name='?todo', value = 'View and complete items in the todo list.', inline=False)
     embed.add_field(name='?poll option 1, option 2', value = 'Creates a new poll.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos`', inline=False)
     embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
@@ -52,18 +52,6 @@ async def help(ctx):
 @client.command() #Ping Command
 async def ping(ctx):
     await ctx.send(f'Pong! My current latency is {round(client.latency*1000)}ms.')
-
-@client.command(pass_context=True) #Clear Messages Command
-@commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount=None):
-    if amount.isnumeric():
-        amount = int(amount)
-        await ctx.channel.purge(limit=amount+1)  
-        amount = str(amount)
-        await ctx.send(":white_check_mark: "+amount+" messages cleared!", delete_after=5)
-    else:
-        nonnumeric_card = discord.Embed(title="Error!", description="The value after !clear must be a number.\neg. !clear 50\nPlease refer to ?help for more info.", colour=discord.Colour.green())
-        await ctx.send(embed=nonnumeric_card)
 
 @client.command()
 async def addtodo(ctx, *, todo_item):
@@ -74,15 +62,15 @@ async def addtodo(ctx, *, todo_item):
 
     #Storing Todo Data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "5432",
+                            database = os.environ['DB'])
     cursor = db.cursor()
     create_table_query = '''CREATE TABLE IF NOT EXISTS todo
-          (GUILD bigint      NOT NULL,
-          CHANNEL           bigint    NOT NULL,
-          TODO_ITEM         TEXT); '''
+                            (GUILD bigint      NOT NULL,
+                            CHANNEL           bigint    NOT NULL,
+                            TODO_ITEM         TEXT); '''
     
     cursor.execute(create_table_query)
     db.commit()
@@ -102,10 +90,10 @@ async def todo(ctx):
 
     #Accessing data
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "5432",
+                            database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT TODO_ITEM FROM todo WHERE GUILD = {ctx.guild.id}")
@@ -223,10 +211,10 @@ async def meeting(ctx, *, information):
 
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "5432",
+                                database = os.environ['DB'])
         cursor = db.cursor()
         create_table_query = '''CREATE TABLE IF NOT EXISTS meetings
             (GUILD bigint      NOT NULL,
@@ -273,10 +261,10 @@ async def meeting(ctx, *, information):
     #Check if event still exists
 
     db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                            password = os.environ['DB_PASS'],
+                            host = os.environ['DB_HOST'],
+                            port = "5432",
+                            database = os.environ['DB'])
 
     cursor = db.cursor()
     cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id} AND TIME = {m_time}")
@@ -305,10 +293,10 @@ async def meeting(ctx, *, information):
 
         #Delete meeting for database
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "5432",
+                                database = os.environ['DB'])
         cursor = db.cursor()
         val = str(name)
         sql_delete_query = 'Delete from meetings where name= %s AND guild=%s'
@@ -324,10 +312,10 @@ async def list(ctx): #List command that lists all upcoming meetings
     #Accessing data
     try:
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "5432",
+                                database = os.environ['DB'])
 
         cursor = db.cursor()
         cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
@@ -387,10 +375,10 @@ async def delete(ctx, *, name=None):
 
         #Accessing data
         db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                password = os.environ['DB_PASS'],
+                                host = os.environ['DB_HOST'],
+                                port = "5432",
+                                database = os.environ['DB'])
 
         cursor = db.cursor()
         sql = ("SELECT NAME FROM meetings WHERE GUILD=%s and NAME=%s")
@@ -492,10 +480,10 @@ async def delete(ctx, *, name=None):
 
         try:
             db = psycopg2.connect(user = os.environ['DB_USER'],
-                                  password = os.environ['DB_PASS'],
-                                  host = os.environ['DB_HOST'],
-                                  port = "5432",
-                                  database = os.environ['DB'])
+                                    password = os.environ['DB_PASS'],
+                                    host = os.environ['DB_HOST'],
+                                    port = "5432",
+                                    database = os.environ['DB'])
 
             cursor = db.cursor()
             cursor.execute(f"SELECT NAME FROM meetings WHERE GUILD = {ctx.guild.id}")
@@ -620,7 +608,7 @@ async def poll(ctx, *, information): #Poll command
 
 @client.command()
 async def timenow(ctx):
-    fmt = "**%H:%M** on %Y-%m-%d "
+    fmt = "**%I:%M** %p on %m-%d-%Y"
     #Timezone Conversions
     now_utc = datetime.datetime.now(timezone('UTC'))
     now_london = now_utc.astimezone(timezone('Europe/London'))
@@ -630,15 +618,13 @@ async def timenow(ctx):
     now_dubai = now_utc.astimezone(timezone("Asia/Dubai"))
     now_pakistan = now_utc.astimezone(timezone('Asia/Karachi'))
     now_india = now_utc.astimezone(timezone('Asia/Kolkata'))
-    now_bangladesh = now_utc.astimezone(timezone('Asia/Dhaka'))
-    now_phnom = now_utc.astimezone(timezone('Asia/Phnom_Penh'))
-    now_china = now_utc.astimezone(timezone('Asia/Hong_Kong'))    
+    now_bangladesh = now_utc.astimezone(timezone('Asia/Dhaka'))  
     now_japan = now_utc.astimezone(timezone('Asia/Tokyo')) 
     now_australia = now_utc.astimezone(timezone('Australia/Sydney')) 
     now_edmonton = now_utc.astimezone(timezone('America/Edmonton'))   
     now_canada_east = now_utc.astimezone(timezone('Canada/Eastern'))
     now_central = now_utc.astimezone(timezone('US/Central'))
-    #now_pacific = now_utc.astimezone(timezone('US/Pacific'))
+    now_pacific = now_utc.astimezone(timezone('US/Pacific'))
 
     currenttime_card = discord.Embed(title="\U0001F551 Current International Times", colour = discord.Colour.green())
 
@@ -658,10 +644,6 @@ async def timenow(ctx):
     currenttime_card.add_field(name="Bangladesh (UTC+6/BST)", value=f">>> {now_bangladesh.strftime(fmt)}", inline=True) 
     currenttime_card.add_field(name="\u200b", value=f"\u200b", inline=True)
 
-    currenttime_card.add_field(name="Thailand and Vietnam (UTC+7/ICT)", value=f">>> {now_phnom.strftime(fmt)}", inline=True)
-    currenttime_card.add_field(name="China (UTC+8/CST)", value=f">>> {now_china.strftime(fmt)}", inline=True)
-    currenttime_card.add_field(name="\u200b", value=f"\u200b", inline=True)
-
     currenttime_card.add_field(name="Japan (UTC+9/JST)", value=f">>> {now_japan.strftime(fmt)}", inline=True)
     currenttime_card.add_field(name="Sydney (UTC+10/AEST)", value=f">>> {now_australia.strftime(fmt)}", inline=True)
     currenttime_card.add_field(name="\u200b", value=f"\u200b", inline=True)
@@ -671,24 +653,12 @@ async def timenow(ctx):
     currenttime_card.add_field(name="\u200b", value=f"\u200b", inline=True)
 
     currenttime_card.add_field(name="Central Standard (UTC-6/CST)", value=f">>> {now_edmonton.strftime(fmt)}", inline=True)
-    currenttime_card.add_field(name="US Pacific (UTC-7/PDT)", value=f">>> {now_central.strftime(fmt)}", inline=True)
+    currenttime_card.add_field(name="US Pacific (UTC-7/PDT)", value=f">>> {now_pacific.strftime(fmt)}", inline=True)
     currenttime_card.add_field(name="\u200b", value=f"\u200b", inline=True)
 
-    currenttime_card.set_footer(text="Tip: UTC and GMT are interchangable.")
     await ctx.send(embed=currenttime_card)
 
 #Command Specific Error Handling--------------------------
-
-@clear.error
-async def clear_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="You must specify a number of messages to clear!\neg. !clear 50\n Please refer to ?help for more info.", colour=discord.Color.green())
-    perms_missing = discord.Embed(title="Missing Permissions!", description="You must have the Manage Messages Permission to run this command.", colour=discord.Color.green())
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(content=None, embed=arg_missing)
-    elif isinstance(error, commands.MissingPermissions):
-        await ctx.send(content=None, embed=perms_missing)
-    else:
-        print(error)
 
 @meeting.error
 async def meeting_error(ctx, error):
