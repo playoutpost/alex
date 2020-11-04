@@ -159,8 +159,8 @@ async def todo(ctx):
 async def meeting(ctx, *, information):
     info = information.strip().split()
     name = time = date = ''
-    time_missing = discord.Embed(title='Missing Time', description="Your command must look like this:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
-    format_error = discord.Embed(title='Formatting Error', description="Your command must look like this:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing Time', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting Error', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
     on_condition = True
 
     for i in range(len(info)):
@@ -606,10 +606,10 @@ async def poll(ctx, *, information): #Poll command
             await ctx.send(embed=winner_card)
         
         else:
-            too_many_options = discord.Embed(title="Too many options!", description="The limit for ?poll is 20 options.", color=discord.Colour.green())
+            too_many_options = discord.Embed(title="Too many options", description="There is a limit of 20 options for a poll", color=discord.Colour.green())
             await ctx.send(embed=too_many_options)
     else:
-        too_many_options = discord.Embed(title="Wrong input", description="You need to give the title of your poll, the options, and the time to run the poll for\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2` will run a poll for 2 minutes", color=discord.Colour.green())
+        too_many_options = discord.Embed(title="Wrong input", description="YCreate a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", color=discord.Colour.green())
         await ctx.send(embed=too_many_options)
 
 @client.command()
@@ -668,8 +668,8 @@ async def timenow(ctx):
 
 @meeting.error
 async def meeting_error(ctx, error):
-    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. ?meeting "Physics Project" in 2 hours\nFor more help, refer to ?help', colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing meeting time', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting error', description='Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`', colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=time_missing)
     else:
@@ -678,8 +678,8 @@ async def meeting_error(ctx, error):
 
 @poll.error
 async def poll_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing some information', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting error', description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
     else:
@@ -695,7 +695,7 @@ async def delete_error(ctx, error):
 
 @addtodo.error
 async def addtodo_error(ctx, error):
-    item_missing = discord.Embed(title='Missing Todo Item!', description="For further help, please refer to ?help", colour=discord.Color.green())
+    item_missing = discord.Embed(title='Missing todo item', description="Your command should follow this format:\n`?addtodo <item>`", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=item_missing)
     else:
@@ -706,11 +706,6 @@ async def todo_error(ctx, error):
     print(error)
 
 #Other Functions------------------------------------------
-
-def read_token():
-    with open("token.txt", 'r') as f:
-        lines = f.readlines()
-        return lines[0].strip()
 
 def has_date(string, fuzzy=True):
     try: 
