@@ -15,7 +15,7 @@ import psycopg2
 timescales = ['sec', 'second', 'min', 'minute', 'hour', 'day', 'week', 'month', 'year'] # right now only supports up to week
 unicode_block = ['🇦','🇧','🇨','🇩','🇪','🇫','🇬','🇭','🇮','🇯','🇰','🇱','🇲','🇳','🇴','🇵','🇶','🇷','🇸','🇹','🇺','🇻','🇼','🇽','🇾','🇿']
 
-client = commands.Bot(command_prefix='!')
+client = commands.Bot(command_prefix='?')
 client.timer_manager = timers.TimerManager(client)
 client.remove_command("help")
 
@@ -23,7 +23,7 @@ client.remove_command("help")
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game(" !help"))
+    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(" Mining..."))
     print('Logged in as: {0.user}'.format(client))
 
 #General Error Handling----------------------------------
@@ -31,7 +31,7 @@ async def on_ready():
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        command_not_found = discord.Embed(title="Command Not Found :(", description="Use !help to see the list of commands and how to use them.", colour=discord.Colour.green())
+        command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
         await ctx.send(content=None, embed=command_not_found)
 
 #Commands-------------------------------------------------
@@ -63,7 +63,7 @@ async def clear(ctx, amount=None):
         amount = str(amount)
         await ctx.send(":white_check_mark: "+amount+" messages cleared!", delete_after=5)
     else:
-        nonnumeric_card = discord.Embed(title="Error!", description="The value after !clear must be a number.\neg. !clear 50\nPlease refer to !help for more info.", colour=discord.Colour.green())
+        nonnumeric_card = discord.Embed(title="Error!", description="The value after !clear must be a number.\neg. !clear 50\nPlease refer to ?help for more info.", colour=discord.Colour.green())
         await ctx.send(embed=nonnumeric_card)
 
 @client.command() #Coinflip Command
@@ -212,8 +212,8 @@ async def todo(ctx):
 async def meeting(ctx, *, information):
     info = information.strip().split()
     name = time = date = ''
-    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to !help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more info, please refer to !help', colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more info, please refer to ?help', colour=discord.Color.green())
     on_condition = True
 
     for i in range(len(info)):
@@ -419,7 +419,7 @@ async def list(ctx): #List command that lists all upcoming meetings
         if future:
             meetings_embed.add_field(name="Later", value='>>> ' + '\n'.join(future), inline=False)
     else:
-        meetings_embed.add_field(name="No upcoming meetings.", value=">>> Use !meeting to create one!\nRefer to !help for more info.")
+        meetings_embed.add_field(name="No upcoming meetings.", value=">>> Use !meeting to create one!\nRefer to ?help for more info.")
 
     await ctx.send(embed=meetings_embed)
 
@@ -725,7 +725,7 @@ async def timenow(ctx):
 
 @clear.error
 async def clear_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="You must specify a number of messages to clear!\neg. !clear 50\n Please refer to !help for more info.", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing Required Argument!', description="You must specify a number of messages to clear!\neg. !clear 50\n Please refer to ?help for more info.", colour=discord.Color.green())
     perms_missing = discord.Embed(title="Missing Permissions!", description="You must have the Manage Messages Permission to run this command.", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
@@ -736,8 +736,8 @@ async def clear_error(ctx, error):
 
 @_8ball.error
 async def _8ball_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="You need to ask the 8ball a question!\neg. !8ball Am I cool?\n Please refer to !help for more info.", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !8ball Am I cool?\n Please refer to !help for more info.", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing Required Argument!', description="You need to ask the 8ball a question!\neg. !8ball Am I cool?\n Please refer to ?help for more info.", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !8ball Am I cool?\n Please refer to ?help for more info.", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
     else:
@@ -745,8 +745,8 @@ async def _8ball_error(ctx, error):
 
 @meeting.error
 async def meeting_error(ctx, error):
-    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to !help", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more help, refer to !help', colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing Meeting Time!', description="For further help, please refer to ?help", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description='Please put the name in quotations:\neg. !meeting "Physics Project" in 2 hours\nFor more help, refer to ?help', colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=time_missing)
     else:
@@ -755,8 +755,8 @@ async def meeting_error(ctx, error):
 
 @poll.error
 async def poll_error(ctx, error):
-    arg_missing = discord.Embed(title='Missing Required Argument!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to !help for more info.", colour=discord.Color.green())
-    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to !help for more info.", colour=discord.Color.green())
+    arg_missing = discord.Embed(title='Missing Required Argument!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
+    format_error = discord.Embed(title='Format Error!', description="Please follow this format: !poll \"Title\" option1, option2, option3 1\n Please refer to ?help for more info.", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=arg_missing)
     else:
@@ -772,7 +772,7 @@ async def delete_error(ctx, error):
 
 @addtodo.error
 async def addtodo_error(ctx, error):
-    item_missing = discord.Embed(title='Missing Todo Item!', description="For further help, please refer to !help", colour=discord.Color.green())
+    item_missing = discord.Embed(title='Missing Todo Item!', description="For further help, please refer to ?help", colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=item_missing)
     else:
