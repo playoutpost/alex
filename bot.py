@@ -568,17 +568,17 @@ async def poll(ctx, *, information): #Poll command
     if '\"' in information and ',' in information:
         op = []
         polltimeinminutes = 0
-        title = information[information.index('\"')+1 : information.rindex('\"')]
+        title = information[information.index('\"') : information.rindex('\"')]
         temp = information.rindex('\"')
         for i in range(information.rindex('\"')+1, len(information)):
             if information[i] == ',':
-                op.append(information[temp+1:i].strip())
+                op.append(information[temp:i].strip())
                 temp = i
         for j in reversed(information):
             if not j.isnumeric():
-                polltimeinminutes = int(information[information.rindex(j)+1:].strip())
+                polltimeinminutes = int(information[information.rindex(j):].strip())
                 break
-        op.append(information[temp+1 : information.rindex(str(polltimeinminutes))].strip())
+        op.append(information[temp : information.rindex(str(polltimeinminutes))].strip())
         
         if len(op) <= 20:
             options = {}
