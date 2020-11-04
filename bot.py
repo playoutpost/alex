@@ -23,7 +23,7 @@ client.remove_command("help")
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(" Mining..."))
+    await client.change_presence(status=discord.Status.online, activity=discord.Streaming(" Mining...", "playoutpost.com"))
     print('Logged in as: {0.user}'.format(client))
 
 #General Error Handling----------------------------------
