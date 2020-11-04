@@ -58,9 +58,9 @@ async def ping(ctx):
 
 @client.command()
 async def addtodo(ctx, *, todo_item):
-    todo_add_card = discord.Embed(title="\U0001F4CB To-Do Item Added!", colour=discord.Color.green())
-    todo_add_card.add_field(name="Item Added:", value=f">>> **{todo_item}** was added to your todo list.")
-    todo_add_card.set_footer(text="Use ?todo to see your list and to check off items when you complete them.")
+    todo_add_card = discord.Embed(title="\U0001F4CB Todo item added", colour=discord.Color.green())
+    todo_add_card.add_field(name="Item added", value=f"**{todo_item}** was added to your todo list")
+    todo_add_card.set_footer(text="Use ?todo to see your list and to check off items when you complete them")
     await ctx.send(embed=todo_add_card)
 
     #Storing Todo Data
@@ -89,7 +89,7 @@ async def addtodo(ctx, *, todo_item):
 @client.command()
 async def todo(ctx):
     todo_card = discord.Embed(title="\U0001F4CB Todo List", colour=discord.Colour.green())
-    completed_embed = discord.Embed(title='\U0001F4CB Todo Item Completed!', colour=discord.Colour.green())
+    completed_embed = discord.Embed(title='\U0001F4CB Todo item completed', colour=discord.Colour.green())
 
     #Accessing data
     db = psycopg2.connect(user = os.environ['DB_USER'],
@@ -111,7 +111,7 @@ async def todo(ctx):
         values.append(f"{todo[0]} - **{str(todo[1])}**")
     if values:
         todo_card.add_field(name="Tasks", value='>>> ' + '\n'.join(values), inline=False)
-        todo_card.set_footer(text="Select the corresponding emojis and press the ✅ to complete your items.")
+        todo_card.set_footer(text="Select the corresponding emojis and then press ✅ to complete your items")
 
         #Get complete choices
         message1 = await ctx.send(embed=todo_card)
@@ -141,12 +141,12 @@ async def todo(ctx):
                     db.commit()
                     dtodos.append(todo[1])
         
-        deleted_todos = "\n".join(f"**{d}** successfully completed!" for d in dtodos)
+        deleted_todos = "\n".join(f"**{d}** successfully completed" for d in dtodos)
         if not dtodos:
-            todo_opt_missing = discord.Embed(title='No Todo Item Selected!', description="Please try again and select a todo item to complete using the reactions.", colour=discord.Color.green())
+            todo_opt_missing = discord.Embed(title='No item selected', description="Please select a todo item to complete and try again", colour=discord.Color.green())
             await ctx.send(embed=todo_opt_missing)
         else:
-            completed_embed.add_field(name='Items Completed:', value='>>> ' + deleted_todos, inline=False)
+            completed_embed.add_field(name='Finished running command', value='' + deleted_todos, inline=False)
             db.commit()
             cursor.close()
             db.close()
@@ -159,8 +159,8 @@ async def todo(ctx):
 async def meeting(ctx, *, information):
     info = information.strip().split()
     name = time = date = ''
-    time_missing = discord.Embed(title='Missing Time', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
-    format_error = discord.Embed(title='Formatting Error', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing Time', description="Your command should follow this format:\n`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting Error', description="Your command should follow this format:\n`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
     on_condition = True
 
     for i in range(len(info)):
@@ -284,14 +284,14 @@ async def meeting(ctx, *, information):
             rvsp = rvsp[1:]
 
         url = "http://discordapp.com/channels/" + str(confirmation.guild.id) + '/' + str(confirmation.channel.id) + '/' + str(confirmation.id)
-        reminder_card = discord.Embed(description=f"Hey! This is a reminder about your meeting, [{name}]({url}).\nHead over to discord to participate!", colour = discord.Colour.green())
+        reminder_card = discord.Embed(description=f"This is a reminder about your meeting, [{name}]({url}).\nHead over to discord to participate!", colour = discord.Colour.green())
         for member in rvsp:
             dm = await member.create_dm()
             await dm.send(embed=reminder_card)
 
         #Meeting Server Announce
         announce = discord.Embed(colour=discord.Colour.green())
-        announce.set_author(name=f"\U00002755 Attention! The meeting \"{name}\" is starting now.")
+        announce.set_author(name=f"\U00002755 Attention! The meeting \"{name}\" is starting now")
         await ctx.send(embed=announce)
 
         #Delete meeting for database
@@ -331,7 +331,7 @@ async def list(ctx): #List command that lists all upcoming meetings
             meetings[i].append(meeting_time[0])
             i += 1
         meetings.sort(key=itemgetter(1))
-        print("Meetings created")
+        print("Meeting created")
     
     except (Exception, psycopg2.Error) as error :
         print ("Error while fetching data from PostgreSQL", error)
@@ -366,13 +366,13 @@ async def list(ctx): #List command that lists all upcoming meetings
         if future:
             meetings_embed.add_field(name="Later", value='>>> ' + '\n'.join(future), inline=False)
     else:
-        meetings_embed.add_field(name="No upcoming meetings.", value=">>> Use ?meeting to create one!\nRefer to ?help for more info.")
+        meetings_embed.add_field(name="No upcoming meetings.")
 
     await ctx.send(embed=meetings_embed)
 
 @client.command()
 async def delete(ctx, *, name=None):
-    deleted_embed = discord.Embed(title='Delete Meeting', colour=discord.Colour.green())
+    deleted_embed = discord.Embed(title='Delete meeting', colour=discord.Colour.green())
     if name:
         gt_10 = False
 
@@ -398,7 +398,7 @@ async def delete(ctx, *, name=None):
             db.commit()
             cursor.close()
             db.close()
-            deleted_embed.add_field(name='Meeting Deleted:', value=f'>>> {name} successfully deleted')
+            deleted_embed.add_field(name='Meeting deleted', value=f'>>> {name} successfully deleted')
             await ctx.send(embed=deleted_embed)
             return
 
@@ -408,7 +408,7 @@ async def delete(ctx, *, name=None):
             gt_10 = True
 
         elif len(meetings) == 0:
-            no_option = discord.Embed(title='Meeting Not Found', description='>>> No meetings found with that name.\nTry using ?meeting to create a new meeting.', colour=discord.Colour.green())
+            no_option = discord.Embed(title='Meeting not found', description='>>> No meetings found with that name.\nTry using ?meeting to create a new meeting.', colour=discord.Colour.green())
             await ctx.send(embed=no_option)
             return
 
@@ -431,13 +431,13 @@ async def delete(ctx, *, name=None):
             date = datetime.datetime.fromtimestamp(int(meetings[i][2])).strftime('%b %-d, %Y')
             time = datetime.datetime.fromtimestamp(int(meetings[i][2])).strftime('%-I:%M%p')
             values.append(f"{meetings[i][0]} - **{str(meetings[i][1])}** on {date} at {time}")
-        delete_options = discord.Embed(title='Delete Meeting', colour=discord.Colour.green())
+        delete_options = discord.Embed(title='Delete meeting', colour=discord.Colour.green())
         delete_options.add_field(name="Select meetings to delete", value='>>> ' + '\n'.join(values), inline=False)
-        delete_options.set_footer(text="Use the reactions below to select which meetings to delete, then click the checkmark to confirm.")
+        delete_options.set_footer(text="Use the reactions below to select which meetings to delete, then click the checkmark to confirm")
 
         #If original meetings list was greater than 10
         if gt_10:
-            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using ?delete *meeting name* to narrow your search', inline=False)
+            delete_options.add_field(name='\u200b', value='Sorry I can\'t show more than 10 results. Try using ?delete *meeting name* to narrow your search', inline=False)
 
         #Adding reactions to get choices
         message_1 = await ctx.send(embed=delete_options)
@@ -468,7 +468,7 @@ async def delete(ctx, *, name=None):
         deleted_meetings = "\n".join(f"**{d}** successfully deleted" for d in dmeetings)
 
         if not dmeetings:
-            meeting_opt_missing = discord.Embed(title="No Meeting Selected!", description="Please try again and select a meetnig to delete using the reactions.")
+            meeting_opt_missing = discord.Embed(title="No meeting selected", description="Please try again and select a meetnig to delete using the reactions")
             await ctx.send(embed=meeting_opt_missing)
         else:
             deleted_embed.add_field(name='\u200b', value='>>> ' + deleted_meetings, inline=False)
@@ -504,7 +504,7 @@ async def delete(ctx, *, name=None):
             meetings = meetings[:10]
             gt_10 = True
         elif len(meetings) == 0:
-            no_option = discord.Embed(title='No Meetings', description='>>> No meetings found.\nTry using ?meeting to create a new meeting.', colour=discord.Colour.green())
+            no_option = discord.Embed(title='No meetings', description='No meeting found', colour=discord.Colour.green())
             await ctx.send(embed=no_option)
             return
 
@@ -530,7 +530,7 @@ async def delete(ctx, *, name=None):
         
         #If original meetings list was greater than 10
         if gt_10:
-            delete_options.add_field(name='\u200b', value='Results exceed display limit. Try using ?delete *meeting name* to narrow your search', inline=False)
+            delete_options.add_field(name='\u200b', value='Sorry I can\'t show more than 10 results. Try using ?delete *meeting name* to narrow your search', inline=False)
 
         #Adding reactions to get choices
         message_1 = await ctx.send(embed=delete_options)
@@ -668,8 +668,8 @@ async def timenow(ctx):
 
 @meeting.error
 async def meeting_error(ctx, error):
-    time_missing = discord.Embed(title='Missing meeting time', description="Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
-    format_error = discord.Embed(title='Formatting error', description='Your command should follow this format:`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`', colour=discord.Color.green())
+    time_missing = discord.Embed(title='Missing meeting time', description="Your command should follow this format:\n`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`", colour=discord.Color.green())
+    format_error = discord.Embed(title='Formatting error', description='Your command should follow this format:\n`?meeting \"Staff Town Hall\" in 2 hours`\n`?meeting \"Lead Meeting\" on 8/21 at 9:30 PM`', colour=discord.Color.green())
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(content=None, embed=time_missing)
     else:
