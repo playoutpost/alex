@@ -28,11 +28,12 @@ async def on_ready():
 
 #General Error Handling----------------------------------
 
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
-        await ctx.send(content=None, embed=command_not_found)
+#@client.event
+#async def on_command_error(ctx, error):
+    #if isinstance(error, commands.CommandNotFound):
+        #command_not_found = discord.Embed(title="Command Not Found :(", description="Use ?help to see the list of commands and how to use them.", colour=discord.Colour.green())
+        #}
+        #await ctx.send(content=None, embed=command_not_found)
 
 #Commands-------------------------------------------------
 
@@ -41,11 +42,12 @@ async def help(ctx):
     embed = discord.Embed(title="\U00002754	Help", colour = discord.Colour.green())
     embed.set_thumbnail(url="https://i.imgur.com/DruHUHr.jpg")
     embed.add_field(name='?meeting', value = 'Creates a new meeting.\n`?meeting "Staff Town Hall" in 2 hours`\n`?meeting "Lead Meeting" on 8/21 at 9:30 PM`', inline=False)
-    embed.add_field(name='?list', value = 'Lists all upcoming meetings.', inline=False)
-    embed.add_field(name='?delete', value = 'Delete upcoming meetings.', inline=False)
+    embed.add_field(name='?list', value = 'Lists all upcoming meetings', inline=False)
+    embed.add_field(name='?delete', value = 'Delete upcoming meetings', inline=False)
     embed.add_field(name='?addtodo', value = 'Creates a new task.\n`addtodo Finish Powerpoint`', inline=False)
-    embed.add_field(name='?todo', value = 'View and complete items in the todo list.', inline=False)
-    embed.add_field(name='?poll option 1, option 2', value = 'Creates a new poll.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos`', inline=False)
+    embed.add_field(name='?todo', value = 'View and complete items in the todo list', inline=False)
+    embed.add_field(name='?timenow', value = 'Get the time from all over the world', inline=False)
+    embed.add_field(name='?poll option, option, time', value = 'Creates a new poll for 2 minutes.\n`?poll "Favourite Food?" Pizza, Sushi, Tacos 2`', inline=False)
     embed.set_footer(text="Powered by synergyy.ml")
     await ctx.send(embed=embed)
 
@@ -565,13 +567,12 @@ async def delete(ctx, *, name=None):
 
 @client.command()
 async def poll(ctx, *, information): #Poll command
-    if '\"' in information and ',' in information:
+    if '\"' in information and ',' in information and information[len(information)-1].isnumeric():
         op = []
         polltimeinminutes = 0
         title = information[information.index('\"')+1 : information.rindex('\"')]
         temp = information.rindex('\"')
         for i in range(information.rindex('\"')+1, len(information)):
-            print(information[i])
             if information[i] == ',':
                 op.append(information[temp+1:i].strip())
                 temp = i
@@ -585,9 +586,6 @@ async def poll(ctx, *, information): #Poll command
             options = {}
             for i in range(len(op)):
                 options[unicode_block[i]] = op[i]
-                print(i)
-                print(op[i])
-                print(op)
             
             vote = discord.Embed(title=f"\U0001F4F6 {title}", color=discord.Colour.green()) 
             value = "\n".join("{} - {}".format(*item) for item in options.items())
