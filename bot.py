@@ -607,7 +607,7 @@ async def poll(ctx, *, information): #Poll command
             too_many_options = discord.Embed(title="Too many options", description="There is a limit of 20 options for a poll", color=discord.Colour.green())
             await ctx.send(embed=too_many_options)
     else:
-        too_many_options = discord.Embed(title="Wrong input", description="YCreate a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", color=discord.Colour.green())
+        too_many_options = discord.Embed(title="Wrong input", description="Create a new poll for 2 minutes.\n`?poll \"Favourite Food?\" Pizza, Sushi, Tacos 2`", color=discord.Colour.green())
         await ctx.send(embed=too_many_options)
 
 @client.command()
